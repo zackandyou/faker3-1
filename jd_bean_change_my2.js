@@ -448,6 +448,7 @@ async function showMsg() {
 		ReturnMessageTitle = `【账号${IndexAll}🆔】${$.nickName || $.UserName}\n`;
 	}
 
+	ReturnMessage += `【账号名称】${$.nickName || $.UserName}`;
 	if ($.levelName || $.JingXiang){
 		ReturnMessage += `【账号信息】`;
 		if ($.levelName) {
