@@ -85,8 +85,7 @@ if ($.isNode()) {
             await showMsg();
             if ($.isNode() && ReturnMessage != '') {
                 $.sentNum++;
-                console.log(`正在发送通知`)
-                await notify.sendNotify(`${$.name}`, `${ReturnMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
+                await notify.sendNotify(`${$.name}`, `${ReturnMessage}`, {url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean`}, '', '', $.UserName)
             }
             // if ($.isNode() && allMessage != '') {
             //     if ($.index % args_xh.sendNum === 0) {
