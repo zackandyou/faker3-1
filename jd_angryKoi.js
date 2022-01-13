@@ -76,6 +76,7 @@ let notify, allMessage = '';
     let remainingTryCount = 2 * cookiesArr.length
     let helpIndex = 0
     while (helpIndex < cookiesArr.length && tools.length > 0 && remainingTryCount > 0) {
+        allMessage = "";
         let cookieIndex = cookieIndexOrder[helpIndex]
 
         try {
@@ -131,16 +132,16 @@ let notify, allMessage = '';
 
         console.info('\n----------------------------\n')
         helpIndex++
+        allMessage += "上述就是本次的幸运锦鲤啦~ 自动开红包流程没出错的话，红包应该已经领到了~不过也可以手动前往 京东app/领券/锦鲤红包 去确认~\n"
+
+        allMessage += "（请以今日0点后第一次运行的消息为准。后续运行只是为了保底，避免第一次因各种未知异常而未完成运行）"
+
+        // 发送通知
+        if ($.isNode() && allMessage) {
+            await notify.sendNotify(`${$.name}`, `${allMessage}`, '', '', '', $.UserName)
+        }
     }
 
-    allMessage += "上述就是本次的幸运锦鲤啦~ 自动开红包流程没出错的话，红包应该已经领到了~不过也可以手动前往 京东app/领券/锦鲤红包 去确认~\n"
-
-    allMessage += "（请以今日0点后第一次运行的消息为准。后续运行只是为了保底，避免第一次因各种未知异常而未完成运行）"
-
-    // 发送通知
-    if ($.isNode() && allMessage) {
-        await notify.sendNotify(`${$.name}`, `${allMessage}`)
-    }
 })().catch((e) => {
     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
 })
@@ -440,7 +441,7 @@ async function requestApi(functionId, cookie, body = {}) {
 
 async function requireConfig() {
     return new Promise(resolve => {
-        notify = $.isNode() ? require('./sendNotify') : '';
+        notify = $.isNode() ? require('./sendNotifyMy') : '';
         const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
         if ($.isNode()) {
             Object.keys(jdCookieNode).forEach((item) => {

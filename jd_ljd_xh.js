@@ -5,7 +5,7 @@
  * */
 const $ = new Env("领京豆");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('./sendNotifyMy') : '';
 let cookiesArr = [], cookie = "", message = ``;
 $.taskInfos = [];
 $.viewAppHome = false;
@@ -22,6 +22,7 @@ if($.isNode()){
     }
     for(let i = 0; i < cookiesArr.length; i++){
         if(cookiesArr[i]){
+            message = '';
             cookie = cookiesArr[i];
             $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
             $.index = i + 1;
@@ -30,11 +31,11 @@ if($.isNode()){
             await main();
             message += `\n`
             await $.wait(1000);
+            if($.isNode()){
+                console.log('正在发送通知...')
+                await notify.sendNotify(`${$.name}`, `${message}`, '', '', '', $.UserName)
+            }
         }
-    }
-    if($.isNode()){
-        console.log('正在发送通知...')
-        await notify.sendNotify(`${$.name}`, `${message}`)
     }
 })().catch((e) => {
     $.log("", `❌ ${$.name}, 失败! 原因: ${e}!`, "");

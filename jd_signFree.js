@@ -1,7 +1,7 @@
 // 自行确认是否有效
 
 const $ = new Env('极速免费签到');
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('./sendNotifyMy') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const UA = $.isNode() ? (process.env.JS_USER_AGENT ? process.env.JS_USER_AGENT : (require('./JS_USER_AGENTS').USER_AGENT)) : ($.getdata('JSUA') ? $.getdata('JSUA') : "'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
@@ -24,6 +24,7 @@ const JD_API_HOST = 'https://api.m.jd.com/';
 !(async () => {
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
+            msg = [];
             cookie = cookiesArr[i];
             $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
             $.index = i + 1;
@@ -32,19 +33,18 @@ const JD_API_HOST = 'https://api.m.jd.com/';
             console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
             msg.push(($.nickName || $.UserName) + ':')
             await sign_all()
+            if (msg.length) {
+                console.log('有消息,推送消息')
+                await notify.sendNotify($.name, msg.join('\n'), '', '', '', $.UserName)
+            } else {
+                console.error('无消息,推送错误')
+                await notify.sendNotify($.name + '错误!!', "无消息可推送!!", '', '', '', $.UserName)
+            }
         }
-    }
-    if (msg.length) {
-        console.log('有消息,推送消息')
-        await notify.sendNotify($.name, msg.join('\n'))
-    } else {
-        console.error('无消息,推送错误')
-        await notify.sendNotify($.name + '错误!!', "无消息可推送!!")
     }
 })()
 .catch((e) => {
         $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
-        notify.sendNotify($.name + '异常!!', msg.join('\n') + '\n' + e)
     })
     .finally(() => {
         $.msg($.name, '', `结束`);

@@ -30,7 +30,7 @@ let message = '', subTitle = '', option = {};
 let jdNotify = false; //是否关闭通知，false打开通知推送，true关闭通知推送
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let goodsUrl = '', taskInfoKey = [];
-let notify = $.isNode() ? require('./sendNotify') : '';
+let notify = $.isNode() ? require('./sendNotifyMy') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let newShareCodes = [];
 let NoNeedCodes = [];
@@ -84,7 +84,7 @@ console.log(`共${cookiesArr.length}个京东账号\n`);
 					});
 
 					if ($.isNode()) {
-						await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+						await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`, '', '', '', $.UserName);
 					}
 					continue;
 				}
@@ -101,6 +101,7 @@ console.log(`共${cookiesArr.length}个京东账号\n`);
 	
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
+            allMessage = "";
             cookie = cookiesArr[i];
             $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
             $.index = i + 1;
@@ -114,7 +115,7 @@ console.log(`共${cookiesArr.length}个京东账号\n`);
                 });
 
                 if ($.isNode()) {
-                    await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+                    await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`, '', '', '', $.UserName);
                 }
                 continue;
             }
@@ -124,10 +125,11 @@ console.log(`共${cookiesArr.length}个京东账号\n`);
             taskInfoKey = [];
             option = {};
             await jdPet();
+
+            if ($.isNode() && allMessage && $.ctrTemp) {
+                await notify.sendNotify(`${$.name}`, `${allMessage}`, '', '', '', $.UserName);
+            }
         }
-    }
-    if ($.isNode() && allMessage && $.ctrTemp) {
-        await notify.sendNotify(`${$.name}`, `${allMessage}`)
     }
 })()
 .catch((e) => {
@@ -153,7 +155,7 @@ async function jdPet() {
                     "open-url": "openapp.jdmoble://"
                 });
                 if ($.isNode())
-                    await notify.sendNotify(`${$.name} - ${$.index} - ${$.nickName || $.UserName}`, `【提示】京东账号${$.index}${$.nickName || $.UserName}\n暂未选购新的商品`);
+                    await notify.sendNotify(`${$.name} - ${$.index} - ${$.nickName || $.UserName}`, `【提示】京东账号${$.index}${$.nickName || $.UserName}\n暂未选购新的商品`, '', '', '', $.UserName);
                 return
             }
             goodsUrl = $.petInfo.goodsInfo && $.petInfo.goodsInfo.goodsUrl;
@@ -164,7 +166,7 @@ async function jdPet() {
                 option['open-url'] = "openApp.jdMobile://";
                 $.msg($.name, ``, `【京东账号${$.index}】${$.nickName || $.UserName}\n【提醒⏰】${$.petInfo.goodsInfo.goodsName}已可领取\n请去京东APP或微信小程序查看\n点击弹窗即达`, option);
                 if ($.isNode()) {
-                    await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName || $.UserName}\n${$.petInfo.goodsInfo.goodsName}已可领取`);
+                    await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName || $.UserName}\n${$.petInfo.goodsInfo.goodsName}已可领取`, '', '', '', $.UserName);
                 }
                 return
             } else if ($.petInfo.petStatus === 6) {
@@ -172,7 +174,7 @@ async function jdPet() {
                 option['open-url'] = "openApp.jdMobile://";
                 $.msg($.name, ``, `【京东账号${$.index}】${$.nickName || $.UserName}\n【提醒⏰】已领取红包,但未继续领养新的物品\n请去京东APP或微信小程序查看\n点击弹窗即达`, option);
                 if ($.isNode()) {
-                    await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName || $.UserName}\n已领取红包,但未继续领养新的物品`);
+                    await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}奖品已可领取`, `京东账号${$.index} ${$.nickName || $.UserName}\n已领取红包,但未继续领养新的物品`, '', '', '', $.UserName);
                 }
                 return
             }
@@ -201,7 +203,7 @@ async function jdPet() {
         $.logErr(e)
         const errMsg = `京东账号${$.index} ${$.nickName || $.UserName}\n任务执行异常，请检查执行日志 ‼️‼️`;
         if ($.isNode())
-            await notify.sendNotify(`${$.name}`, errMsg);
+            await notify.sendNotify(`${$.name}`, errMsg, '', '', '', $.UserName);
         $.msg($.name, '', `${errMsg}`)
     }
 }
@@ -223,7 +225,7 @@ async function GetShareCode() {
         $.logErr(e)
         const errMsg = `【京东账号${$.index} ${$.nickName || $.UserName}】\n任务执行异常，请检查执行日志 ‼️‼️`;
         if ($.isNode())
-            await notify.sendNotify(`${$.name}`, errMsg);
+            await notify.sendNotify(`${$.name}`, errMsg, '', '', '', $.UserName);
         $.msg($.name, '', `${errMsg}`);
     }
 }

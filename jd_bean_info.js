@@ -1,5 +1,5 @@
 const $ = new Env('京豆详情统计');
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('./sendNotifyMy') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let allMessage = '';
@@ -21,6 +21,7 @@ if ($.isNode()) {
   }
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
+      allMessage = '';
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
@@ -46,12 +47,13 @@ if ($.isNode()) {
       }
       await bean();
       await showMsg();
+
+      if ($.isNode() && allMessage) {
+        await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` }, '', '', '', $.UserName)
+      }
     }
   }
 
-  if ($.isNode() && allMessage) {
-    await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
-  }
 })()
     .catch((e) => {
       // $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')

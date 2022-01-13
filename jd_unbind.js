@@ -6,7 +6,7 @@
 const $ = new Env('注销京东会员卡');
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('./sendNotifyMy') : '';
 
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
@@ -42,7 +42,7 @@ const JD_API_HOST = 'https://api.m.jd.com/';
         $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
 
         if ($.isNode()) {
-          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`, '', '', '', $.UserName);
         }
         continue
       }
@@ -95,7 +95,7 @@ async function unsubscribeCards() {
     for (a = 0; a < push_len; a++){
       tg_text = tg_text + $.pushcardList[a] + '\n'
     }
-    await notify.sendNotify(`京东会员卡注消链接`, `【京东账号${$.index}】${$.UserName}\n${tg_text}`);
+    await notify.sendNotify(`京东会员卡注消链接`, `【京东账号${$.index}】${$.UserName}\n${tg_text}`, '', '', '', $.UserName);
   } else {
     let step = 0
     for (step = 0; step < push_lena; step++){
@@ -103,14 +103,14 @@ async function unsubscribeCards() {
       for (a = 0; a < 20; a++){
         tg_text = tg_text + $.pushcardList[a+step*20] + '\n'
       }
-      await notify.sendNotify(`京东会员卡注消链接`, `【京东账号${$.index}】${$.UserName}\n${tg_text}`);
+      await notify.sendNotify(`京东会员卡注消链接`, `【京东账号${$.index}】${$.UserName}\n${tg_text}`, '', '', '', $.UserName);
     }
 
     let tg_text = ''
     for (b = 0; b < push_lenb; b++){
       tg_text = tg_text + $.pushcardList[b+step*20] + '\n'
     }
-    await notify.sendNotify(`京东会员卡注消链接`, `【京东账号${$.index}】${$.UserName}\n${tg_text}`);
+    await notify.sendNotify(`京东会员卡注消链接`, `【京东账号${$.index}】${$.UserName}\n${tg_text}`, '', '', '', $.UserName);
   }
 
 }

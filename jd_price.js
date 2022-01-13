@@ -19,7 +19,7 @@ cron "41 23 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/j
 京东保价 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_price.js, cronexpr="41 23 * * *", timeout=3600, enable=true
  */
 const $ = new Env('京东保价');
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('./sendNotifyMy') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const jsdom = $.isNode() ? require('jsdom') : '';
@@ -42,6 +42,7 @@ const JD_API_HOST = 'https://api.m.jd.com/';
   await jstoken();
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
+      allMessage = "";
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
@@ -55,7 +56,7 @@ const JD_API_HOST = 'https://api.m.jd.com/';
         $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
 
         if ($.isNode()) {
-          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`, '', '', '', $.UserName);
         }
         continue
       }
@@ -64,10 +65,10 @@ const JD_API_HOST = 'https://api.m.jd.com/';
         await $.wait(2000)
         await jstoken();
       }
+      if (allMessage) {
+        if ($.isNode()) await notify.sendNotify(`${$.name}`, `${allMessage}`, '', '', '', $.UserName);
+      }
     }
-  }
-  if (allMessage) {
-    if ($.isNode()) await notify.sendNotify(`${$.name}`, `${allMessage}`);
   }
 })()
   .catch((e) => {

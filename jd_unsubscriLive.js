@@ -19,7 +19,7 @@ cron "55 6 * * *" script-path=jd_unsubscriLive.js,tag=取关所有主播
 const $ = new Env('取关所有主播');
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('./sendNotifyMy') : '';
 
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', allMessage = '';
@@ -38,6 +38,7 @@ if ($.isNode()) {
     }
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
+            allMessage = "";
             cookie = cookiesArr[i];
             $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
             $.index = i + 1;
@@ -48,7 +49,7 @@ if ($.isNode()) {
             if (!$.isLogin) {
                 $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
                 if ($.isNode()) {
-                    await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+                    await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`, '', '', '', $.UserName);
                 }
                 continue
             }
@@ -86,12 +87,12 @@ if ($.isNode()) {
             if ($.fails > 4) {
                 allMessage += `❗️❗️取关主播连续五次失败❗️❗️\n`;
             }
-            allMessage += '\n'
+
+            if (allMessage) {
+                allMessage = allMessage.substring(0, allMessage.length - 1)
+                if ($.isNode() && (process.env.CASH_NOTIFY_CONTROL ? process.env.CASH_NOTIFY_CONTROL === 'false' : !!1)) await notify.sendNotify($.name, allMessage, '', '', '', $.UserName);
+            }
         }
-    }
-    if (allMessage) {
-        allMessage = allMessage.substring(0, allMessage.length - 1)
-        if ($.isNode() && (process.env.CASH_NOTIFY_CONTROL ? process.env.CASH_NOTIFY_CONTROL === 'false' : !!1)) await notify.sendNotify($.name, allMessage);
     }
 })()
     .catch((e) => {
