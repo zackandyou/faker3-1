@@ -54,7 +54,7 @@ let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let intPerSent = 0;
 let i = 0;
-let llShowMonth = false;
+let llShowMonth = true;
 let Today = new Date();
 let strAllNotify="";
 let strSubNotify="";
