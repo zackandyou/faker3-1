@@ -105,15 +105,15 @@ async function bean() {
         }
       } else {
         $.errorMsg = `数据异常`;
-        // $.msg($.name, ``, `账号${$.index}：${$.nickName}\n${$.errorMsg}`);
+        $.msg($.name, ``, `账号${$.index}：${$.nickName}\n${$.errorMsg}`);
         t = 1;
       }
     } else if (response && response.code === "3") {
-      // console.log(`cookie已过期，或者填写不规范，跳出`)
+      console.log(`cookie已过期，或者填写不规范，跳出`)
       t = 1;
     } else {
-      // console.log(`未知情况：${JSON.stringify(response)}`);
-      // console.log(`未知情况，跳出`)
+      console.log(`未知情况：${JSON.stringify(response)}`);
+      console.log(`未知情况，跳出`)
       t = 1;
     }
   } while (t === 0);
