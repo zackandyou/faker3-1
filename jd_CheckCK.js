@@ -138,7 +138,7 @@ if ($.isNode() && process.env.CHECKCK_ALLNOTIFY) {
     }
 
     for (let i = 0; i < envs.length; i++) {
-        if (envs[i].value) {			
+        if (envs[i].value) {
 			var tempid=0;
 			if(envs[i]._id){
 				tempid=envs[i]._id;
@@ -146,7 +146,7 @@ if ($.isNode() && process.env.CHECKCK_ALLNOTIFY) {
 			if(envs[i].id){
 				tempid=envs[i].id;
 			}
-            cookie = await getEnvById(tempid);				
+            cookie = await getEnvById(tempid);
             $.UserName = (cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
             $.UserName2 = decodeURIComponent($.UserName);
             $.index = i + 1;

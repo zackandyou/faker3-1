@@ -31,6 +31,7 @@ let activityId = ''
 let vender = ''
 let num = 0
 let shopname = ''
+let shopname=''
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -86,6 +87,7 @@ async function dpqd() {
   for (var j = 0; j < token.length; j++) {
     num = j + 1
     if (token[j] == '') { continue }
+    if (token[j]=='') {continue}
     await getvenderId(token[j])
     if (vender == '') { continue }
     await getvenderName(vender)
