@@ -3,7 +3,7 @@ cron "30 * * * *" jd_CheckCK.js, tag:京东CK检测by-ccwav
  */
 //详细说明参考 https://github.com/ccwav/QLScript2.
 const $ = new Env('京东CK检测');
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('./sendNotifyMy') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const got = require('got');
@@ -214,7 +214,7 @@ if ($.isNode() && process.env.CHECKCK_ALLNOTIFY) {
                 TempOErrorMessage = $.error;
 
             } else {
-                const strnowstatus = await getstatus(tempid);
+                let strnowstatus = await getstatus(tempid);
                 if (strnowstatus == 99) {
                     strnowstatus = envs[i].status;
                 }
@@ -310,6 +310,10 @@ if ($.isNode() && process.env.CHECKCK_ALLNOTIFY) {
                 EnableMessage += TempEnableMessage;
                 OErrorMessage += TempOErrorMessage;
             }
+
+            await notify.sendNotify(`${$.name}`, `${strNotifyOneTemp}`, {
+                url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean`
+            }, "", "", $.UserName)
 
         }
         console.log(`等待2秒.......	\n`);

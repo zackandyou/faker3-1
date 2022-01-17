@@ -22,7 +22,7 @@ let showMsg = '';
 
             console.log(showMsg);
 
-            await notify.sendNotify(`${$.name}`, `${showMsg}`, '', '', '', $.UserName);
+            // await notify.sendNotify(`${$.name}`, `${showMsg}`, '', '', '', $.UserName);
         }
     }
 })()
