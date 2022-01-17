@@ -1,10 +1,10 @@
 /*
-cron "30 10,22 * * *" jd_bean_change.js, tag:资产变化强化版by-ccwav
+cron "30 10,22 * * *" jd_bean_change.js, tag:资产变化强化版by-lazzman
 */
 
-//更新by ccwav,20210821
+//更新by lazzman,20220113
 const $ = new Env('京东资产变动通知');
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('./sendNotifyMy') : '';
 const JXUserAgent =  $.isNode() ? (process.env.JX_USER_AGENT ? process.env.JX_USER_AGENT : ``):``;
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -68,7 +68,7 @@ if ($.isNode()) {
                 $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
 
                 if ($.isNode()) {
-                    await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+                    await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`, '', '', '', $.UserName);
                 }
                 continue
             }
@@ -83,24 +83,28 @@ if ($.isNode()) {
             await getJxFactory();   //惊喜工厂
             await getDdFactoryInfo(); // 京东工厂
             await showMsg();
-            if ($.isNode() && allMessage != '') {
-                if ($.index % args_xh.sendNum === 0) {
-                    $.sentNum++;
-                    console.log(`正在进行第 ${$.sentNum} 次发送通知，发送数量：${args_xh.sendNum}`)
-                    await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
-                    allMessage = "";
-                }
+            if ($.isNode() && ReturnMessage != '') {
+                $.sentNum++;
+                await notify.sendNotify(`${$.name}`, `${ReturnMessage}`, {url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean`}, '', '', $.UserName)
             }
+            // if ($.isNode() && allMessage != '') {
+            //     if ($.index % args_xh.sendNum === 0) {
+            //         $.sentNum++;
+            //         console.log(`正在进行第 ${$.sentNum} 次发送通知，发送数量：${args_xh.sendNum}`)
+            //         await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
+            //         allMessage = "";
+            //     }
+            // }
         }
     }
 
-    if ($.isNode() && allMessage != '') {
-        if (($.cookiesArr.length - ($.sentNum * args_xh.sendNum)) < args_xh.sendNum) {
-            console.log(`正在进行最后一次发送通知，发送数量：${($.cookiesArr.length - ($.sentNum * args_xh.sendNum))}`)
-            await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
-            allMessage = "";
-        }
-    }
+    // if ($.isNode() && allMessage != '') {
+    //     if (($.cookiesArr.length - ($.sentNum * args_xh.sendNum)) < args_xh.sendNum) {
+    //         console.log(`正在进行最后一次发送通知，发送数量：${($.cookiesArr.length - ($.sentNum * args_xh.sendNum))}`)
+    //         await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
+    //         allMessage = "";
+    //     }
+    // }
 })()
     .catch((e) => {
         $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')

@@ -20,7 +20,7 @@ if (!token.length) {
 }
 const $ = new Env('店铺签到');
 
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('./sendNotifyMy') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
@@ -65,12 +65,12 @@ if ($.isNode()) {
         $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
 
         if ($.isNode()) {
-          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`, "", "", "", $.UserName);
         }
         continue
       }
       await dpqd()
-      if (i < 1) { await showMsg() }
+      await showMsg()
     }
   }
 })()
@@ -281,7 +281,7 @@ function taskUrl(token, venderId) {
 async function showMsg() {
   if ($.isNode()) {
     $.msg($.name, '', `【京东账号${$.index}】${$.nickName}\n${message}`);
-    await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `【京东账号${$.index}】${$.nickName}\n${message}`);
+    await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `【京东账号${$.index}】${$.nickName}\n${message}`, "", "", "", $.UserName);
   }
 }
 
