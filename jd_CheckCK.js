@@ -311,9 +311,11 @@ if ($.isNode() && process.env.CHECKCK_ALLNOTIFY) {
                 OErrorMessage += TempOErrorMessage;
             }
 
-            await notify.sendNotify(`${$.name}`, `${strNotifyOneTemp}`, {
-                url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean`
-            }, "", "", $.UserName)
+            if (strNotifyOneTemp) {
+                await notify.sendNotify(`${$.name}`, `${strNotifyOneTemp}`, {
+                    url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean`
+                }, "", "", $.UserName);
+            }
 
         }
         console.log(`等待2秒.......	\n`);
