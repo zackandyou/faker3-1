@@ -91,6 +91,9 @@ if ($.isNode()) {
         continue
       }
       await jdDreamFactory()
+      if ($.isNode() && message) {
+        await notify.sendNotify(`${$.name}`, `【京东账号${$.index}】${$.nickName}\n${message}`, {url: jxOpenUrl}, "", "", $.UserName)
+      }
     }
   }
   if (tuanActiveId) {
@@ -111,9 +114,6 @@ if ($.isNode()) {
           }
         }
         if ($.canHelp) await joinLeaderTuan();//参团
-        if ($.isNode() && message) {
-          await notify.sendNotify(`${$.name}`, `${message}`, {url: jxOpenUrl}, "", "", $.UserName)
-        }
       }
     }
   }

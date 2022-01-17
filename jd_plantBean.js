@@ -72,6 +72,9 @@ $.newShareCode = [];
       option = {};
       await jdPlantBean();
       await showMsg();
+      if ($.isNode() && message) {
+        await notify.sendNotify(`${$.name}`, `京东账号${$.index} ${$.nickName}\n${message}`, "", "", "", $.UserName)
+      }
     }
   }
   for (let j = 0; j < cookiesArr.length; j++) {
@@ -82,9 +85,6 @@ $.newShareCode = [];
       //await shareCodesFormat();
       await doHelp()
     }
-  }
-  if ($.isNode() && allMessage) {
-    await notify.sendNotify(`${$.name}`, `${allMessage}`)
   }
 })().catch((e) => {
   $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -594,7 +594,7 @@ function shareCodesFormat() {
 function requireConfig() {
   return new Promise(resolve => {
     //console.log('开始获取种豆得豆配置文件\n')
-    notify = $.isNode() ? require('./sendNotify') : '';
+    notify = $.isNode() ? require('./sendNotifyMy') : '';
     //Node.js用户请在jdCookie.js处填写京东ck;
     const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
     const jdPlantBeanShareCodes = '';
