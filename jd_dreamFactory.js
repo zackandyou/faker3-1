@@ -91,9 +91,7 @@ if ($.isNode()) {
         continue
       }
       await jdDreamFactory()
-      if ($.isNode() && message) {
-        await notify.sendNotify(`${$.name}`, `【京东账号${$.index}】${$.nickName}\n${message}`, {url: jxOpenUrl}, "", "", $.UserName)
-      }
+
     }
   }
   if (tuanActiveId) {
@@ -1346,6 +1344,9 @@ async function showMsg() {
       $.log(`\n${message}`);
     } else {
       $.log(`\n${message}`);
+    }
+    if ($.isNode() && message) {
+      await notify.sendNotify(`${$.name}`, `【京东账号${$.index}】${$.nickName}\n${message}`, {url: jxOpenUrl}, "", "", $.UserName)
     }
     resolve()
   })
