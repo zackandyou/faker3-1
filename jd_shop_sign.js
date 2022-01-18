@@ -80,10 +80,10 @@ if ($.isNode()) {
       }
       await dpqd()
       await showMsg()
+      if ($.isNode() && message) {
+        await notify.sendNotify(`${$.name}`, `${message}`)
+      }
     }
-  }
-  if ($.isNode() && allMessage) {
-    await notify.sendNotify(`${$.name}`, `${allMessage}`)
   }
 })()
     .catch((e) => {
