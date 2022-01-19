@@ -28,7 +28,6 @@ if ($.isNode()) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
-  }
         for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
             if ($.runOut)
@@ -55,7 +54,7 @@ if ($.isNode()) {
             await getTaskFinishCount(cookiesArr[i])
             await $.wait(2000)
             if ($.count.finishCount < $.count.maxTaskCount) {
-
+                
                 let range = $.count.maxTaskCount - $.count.finishCount;
                 await getTaskList(cookie)
                 await $.wait(2000)
@@ -72,7 +71,7 @@ if ($.isNode()) {
                             continue;
                         }
                         if ($.count.finishCount == $.count.maxTaskCount) {
-                            console.log(`任务全部完成!`);
+                            console.log(`任务全部完成!`);                           
                             break;
                         }
                     }
@@ -83,7 +82,6 @@ if ($.isNode()) {
             }
 
         }
-  }
     }
 
 })()
@@ -113,7 +111,7 @@ function saveTaskRecord(ck,taskId,businessId,taskType) {
             "Content-Type": "application/json;charset=UTF-8"
         },
         body : JSON.stringify({ taskId: taskId,businessId:businessId, taskType: taskType }),
-
+       
     }
     return new Promise(resolve => {
         $.post(opt, (err, resp, data) => {
@@ -130,11 +128,9 @@ function saveTaskRecord(ck,taskId,businessId,taskType) {
                         }
                         else{
                             console.log("未获取到活动内容，开始下一个")
-             }
                         }
-
-
-
+                        
+                     
                     } else {
                         $.log("京东返回了空数据")
                     }
@@ -168,7 +164,7 @@ function saveTaskRecord1(ck,taskId,businessId,taskType,uid,tt) {
             "Content-Type": "application/json;charset=UTF-8"
         },
         body : JSON.stringify({ taskId: taskId, taskType: taskType,businessId:businessId,uid:uid,tt:tt }),
-
+       
     }
     return new Promise(resolve => {
         $.post(opt, (err, resp, data) => {
@@ -186,7 +182,6 @@ function saveTaskRecord1(ck,taskId,businessId,taskType,uid,tt) {
                             console.log("结果", data);
                     } else {
                         $.log("京东返回了空数据")
-             }
                     }
                 }
             } catch (error) {
@@ -274,7 +269,7 @@ function getTaskList(ck) {
                         else{
                             console.log("未获取到活动列表，请检查活动")
                         }
-
+                       
                     }
                 }
             } catch (e) {
