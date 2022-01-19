@@ -27,7 +27,7 @@ cron "15 6-18/6 * * *" script-path=jd_pet.js,tag=东东萌宠
 const $ = new Env('东东萌宠互助版');
 let cookiesArr = [], cookie = '', jdPetShareArr = [], isBox = false, allMessage = '';
 let message = '', subTitle = '', option = {};
-let jdNotify = false; //是否关闭通知，false打开通知推送，true关闭通知推送
+let jdNotify = true; //是否关闭通知，false打开通知推送，true关闭通知推送
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let goodsUrl = '', taskInfoKey = [];
 let notify = $.isNode() ? require('./sendNotifyMy') : '';
@@ -101,7 +101,6 @@ console.log(`共${cookiesArr.length}个京东账号\n`);
 	
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
-            allMessage = "";
             cookie = cookiesArr[i];
             $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
             $.index = i + 1;
@@ -126,8 +125,8 @@ console.log(`共${cookiesArr.length}个京东账号\n`);
             option = {};
             await jdPet();
 
-            if ($.isNode() && allMessage && $.ctrTemp) {
-                await notify.sendNotify(`${$.name}`, `${allMessage}`, '', '', '', $.UserName);
+            if ($.isNode() && message && $.ctrTemp) {
+                await notify.sendNotify(`${$.name}`, `${message}`, '', '', '', $.UserName);
             }
         }
     }

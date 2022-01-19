@@ -20,7 +20,7 @@ const $ = new Env('取关所有主播');
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotifyMy') : '';
-
+const jdNotify =true;//是否关闭通知，false打开通知推送，true关闭通知推送
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', allMessage = '';
 if ($.isNode()) {
@@ -90,7 +90,7 @@ if ($.isNode()) {
 
             if (allMessage) {
                 allMessage = allMessage.substring(0, allMessage.length - 1)
-                if ($.isNode() && (process.env.CASH_NOTIFY_CONTROL ? process.env.CASH_NOTIFY_CONTROL === 'false' : !!1)) await notify.sendNotify($.name, allMessage, '', '', '', $.UserName);
+                if ($.isNode() && !jdNotify && (process.env.CASH_NOTIFY_CONTROL ? process.env.CASH_NOTIFY_CONTROL === 'false' : !!1)) await notify.sendNotify($.name, allMessage, '', '', '', $.UserName);
             }
         }
     }

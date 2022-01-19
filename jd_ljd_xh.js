@@ -6,6 +6,7 @@
 const $ = new Env("领京豆");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const notify = $.isNode() ? require('./sendNotifyMy') : '';
+let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
 let cookiesArr = [], cookie = "", message = ``;
 $.taskInfos = [];
 $.viewAppHome = false;
@@ -31,7 +32,7 @@ if($.isNode()){
             await main();
             message += `\n`
             await $.wait(1000);
-            if($.isNode()){
+            if($.isNode() && !jdNotify){
                 console.log('正在发送通知...')
                 await notify.sendNotify(`${$.name}`, `${message}`, '', '', '', $.UserName)
             }

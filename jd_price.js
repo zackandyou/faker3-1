@@ -20,6 +20,7 @@ cron "41 23 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/j
  */
 const $ = new Env('京东保价');
 const notify = $.isNode() ? require('./sendNotifyMy') : '';
+const jdNotify =true;//是否关闭通知，false打开通知推送，true关闭通知推送
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const jsdom = $.isNode() ? require('jsdom') : '';
@@ -65,8 +66,8 @@ const JD_API_HOST = 'https://api.m.jd.com/';
         await $.wait(2000)
         await jstoken();
       }
-      if (allMessage) {
-        if ($.isNode()) await notify.sendNotify(`${$.name}`, `${allMessage}`, '', '', '', $.UserName);
+      if ($.isNode() && allMessage && !jdNotify) {
+        await notify.sendNotify(`${$.name}`, `${allMessage}`, '', '', '', $.UserName);
       }
     }
   }

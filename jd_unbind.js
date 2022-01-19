@@ -7,7 +7,7 @@ const $ = new Env('注销京东会员卡');
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotifyMy') : '';
-
+const jdNotify =true;//是否关闭通知，false打开通知推送，true关闭通知推送
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 if ($.isNode()) {
@@ -18,7 +18,6 @@ if ($.isNode()) {
 } else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
-const jdNotify = $.getdata('jdUnbindCardNotify');//是否关闭通知，false打开通知推送，true关闭通知推送
 let cardPageSize = 20;// 运行一次取消多少个会员卡。数字0表示不注销任何会员卡
 let stopCards = `京东PLUS会员`;//遇到此会员卡跳过注销,多个使用&分开
 const JD_API_HOST = 'https://api.m.jd.com/';
@@ -95,7 +94,9 @@ async function unsubscribeCards() {
     for (a = 0; a < push_len; a++){
       tg_text = tg_text + $.pushcardList[a] + '\n'
     }
-    await notify.sendNotify(`京东会员卡注消链接`, `【京东账号${$.index}】${$.UserName}\n${tg_text}`, '', '', '', $.UserName);
+    if (!jdNotify) {
+      await notify.sendNotify(`京东会员卡注消链接`, `【京东账号${$.index}】${$.UserName}\n${tg_text}`, '', '', '', $.UserName);
+    }
   } else {
     let step = 0
     for (step = 0; step < push_lena; step++){
@@ -103,14 +104,18 @@ async function unsubscribeCards() {
       for (a = 0; a < 20; a++){
         tg_text = tg_text + $.pushcardList[a+step*20] + '\n'
       }
-      await notify.sendNotify(`京东会员卡注消链接`, `【京东账号${$.index}】${$.UserName}\n${tg_text}`, '', '', '', $.UserName);
+      if (!jdNotify) {
+        await notify.sendNotify(`京东会员卡注消链接`, `【京东账号${$.index}】${$.UserName}\n${tg_text}`, '', '', '', $.UserName);
+      }
     }
 
     let tg_text = ''
     for (b = 0; b < push_lenb; b++){
       tg_text = tg_text + $.pushcardList[b+step*20] + '\n'
     }
-    await notify.sendNotify(`京东会员卡注消链接`, `【京东账号${$.index}】${$.UserName}\n${tg_text}`, '', '', '', $.UserName);
+    if (!jdNotify) {
+      await notify.sendNotify(`京东会员卡注消链接`, `【京东账号${$.index}】${$.UserName}\n${tg_text}`, '', '', '', $.UserName);
+    }
   }
 
 }

@@ -26,6 +26,7 @@ let cookiesArr = []
 var tools = []
 
 let notify, allMessage = '';
+const jdNotify =true;//是否关闭通知，false打开通知推送，true关闭通知推送
 
 !(async () => {
     await requireConfig()
@@ -137,7 +138,7 @@ let notify, allMessage = '';
         allMessage += "（请以今日0点后第一次运行的消息为准。后续运行只是为了保底，避免第一次因各种未知异常而未完成运行）"
 
         // 发送通知
-        if ($.isNode() && allMessage) {
+        if ($.isNode() && allMessage && !jdNotify) {
             await notify.sendNotify(`${$.name}`, `${allMessage}`, '', '', '', $.UserName)
         }
     }

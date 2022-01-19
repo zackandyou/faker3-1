@@ -7,6 +7,7 @@ cron 14 10 * * * https://raw.githubusercontent.com/smiek2121/scripts/master/jd_s
 
 const $ = new Env('京东签到图形验证');
 const notify = $.isNode() ? require('./sendNotifyMy') : '';
+let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 CryptoScripts()
@@ -80,7 +81,7 @@ const turnTableId = [
       let msg = `【京东账号${$.index}】${$.nickName || $.UserName}\n【签到时间】:  ${$.beanSignTime}\n【签到概览】:  成功${successNum}个, 失败${errorNum}个${invalidNum && "，失效"+invalidNum+"个" || ""}\n${beanNum > 0 && "【签到奖励】:  "+beanNum+"京豆\n" || ""}`
       message += msg + '\n'
       if($.isNode()) $.msg($.name, msg);
-      if ($.isNode() && message) await notify.sendNotify(`${$.name}`, subTitle + msg, '', '', '', $.UserName);
+      if ($.isNode() && message && !jdNotify) await notify.sendNotify(`${$.name}`, subTitle + msg, '', '', '', $.UserName);
     }
   }
   await showMsg();

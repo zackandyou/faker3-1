@@ -28,7 +28,7 @@ cron "1 7-21/2 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/syn
 const $ = new Env('京东种豆得豆_内部互助');
 //Node.js用户请在jdCookie.js处填写京东ck;
 //ios等软件用户直接用NobyDa的jd cookie
-let jdNotify = true;//是否开启静默运行。默认true开启
+let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
 let cookiesArr = [], cookie = '', jdPlantBeanShareArr = [], isBox = false, notify, newShareCodes, option, message, subTitle;
 //京东接口地址
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
@@ -72,7 +72,7 @@ $.newShareCode = [];
       option = {};
       await jdPlantBean();
       await showMsg();
-      if ($.isNode() && message) {
+      if ($.isNode() && message && !jdNotify) {
         await notify.sendNotify(`${$.name}`, `京东账号${$.index} ${$.nickName}\n${message}`, "", "", "", $.UserName)
       }
     }
