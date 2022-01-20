@@ -442,7 +442,6 @@ async function doHelp() {
 }
 function showMsg() {
   $.log(`\n${message}\n`);
-  jdNotify = $.getdata('jdPlantBeanNotify') ? $.getdata('jdPlantBeanNotify') : jdNotify;
   if (!jdNotify || jdNotify === 'false') {
     $.msg($.name, subTitle, message);
   }

@@ -91,7 +91,6 @@ let FEED_NUM = ($.getdata('joyFeedCount') * 1) || 10;   //喂食数量默认10g,
     })
 function showMsg() {
   $.log(`\n${message}\n`);
-  jdNotify = $.getdata('jdJoyNotify') ? $.getdata('jdJoyNotify') : jdNotify;
   if (!jdNotify || jdNotify === 'false') {
     //$.msg($.name, subTitle, `【京东账号${$.index}】${$.UserName}\n` + message);
   }

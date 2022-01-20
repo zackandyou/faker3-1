@@ -18,7 +18,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let cookiesArr = [],
     cookie = '',
     message;
-const active = '';
+let active = '';
 let first = false; //第一次参加变量设置为true查看商品ID 填写商品ID后自动获取邀请码邀请  如果只助力 变量设置为false
 let launchid
 

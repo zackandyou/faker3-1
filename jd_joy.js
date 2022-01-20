@@ -848,7 +848,6 @@ function getSupplyInfo(showOrder) {
   })
 }
 function showMsg() {
-  jdNotify = $.getdata('jdJoyNotify') ? $.getdata('jdJoyNotify') : jdNotify;
   if (!jdNotify || jdNotify === 'false') {
     $.msg($.name, subTitle, message);
   } else {

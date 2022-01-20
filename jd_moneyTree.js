@@ -67,7 +67,6 @@ let userInfo = null, taskInfo = [], message = '', subTitle = '', fruitTotal = 0;
     }
   }
   if (allMsg) {
-    jdNotify = $.isNode() ? (process.env.MONEYTREE_NOTIFY_CONTROL ? process.env.MONEYTREE_NOTIFY_CONTROL : jdNotify) : ($.getdata('jdMoneyTreeNotify') ? $.getdata('jdMoneyTreeNotify') : jdNotify);
     if (!jdNotify || jdNotify === 'false') {
       if ($.isNode()) await notify.sendNotify($.name, allMsg);
       $.msg($.name, '', allMsg)
