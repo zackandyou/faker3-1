@@ -11,7 +11,7 @@ let allMessage = '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
-let jdNotify = false; //是否开启静默运行，默认false关闭(即:奖品兑换成功后会发出通知提示)
+const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false; //是否开启静默运行，默认false关闭(即:奖品兑换成功后会发出通知提示)
 let Today = new Date();
 let strDisable20 = "false";
 

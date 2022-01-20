@@ -27,7 +27,7 @@ cron "15 6-18/6 * * *" script-path=jd_pet.js,tag=东东萌宠
 const $ = new Env('东东萌宠互助版');
 let cookiesArr = [], cookie = '', jdPetShareArr = [], isBox = false, allMessage = '';
 let message = '', subTitle = '', option = {};
-let jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false; //是否关闭通知，false打开通知推送，true关闭通知推送
+const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false; //是否关闭通知，false打开通知推送，true关闭通知推送
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let goodsUrl = '', taskInfoKey = [];
 let notify = $.isNode() ? require('./sendNotifyMy') : '';

@@ -41,7 +41,7 @@ if ($.isNode()) {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 let message = '', subTitle = '';
-let jdNotify = false;//是否开启静默运行，false关闭静默运行(即通知)，true打开静默运行(即不通知)
+const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否开启静默运行，false关闭静默运行(即通知)，true打开静默运行(即不通知)
 let jdJoyHelpFeed = true;//是否给好友喂食，false为不给喂食，true为给好友喂食，默认给好友喂食
 let jdJoyStealCoin = true;//是否偷好友积分与狗粮，false为否，true为是，默认是偷
 const JD_API_HOST = 'https://jdjoy.jd.com/pet';

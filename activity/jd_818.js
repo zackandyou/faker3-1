@@ -26,7 +26,7 @@ cron "0 0-18/6 * * *" script-path=jd_818.js, tag=京东手机狂欢城
 const $ = new Env('京东手机狂欢城');
 
 const notify = $.isNode() ? require('../sendNotify') : '';
-let jdNotify = false;//是否开启推送互助码
+const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否开启推送互助码
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
 

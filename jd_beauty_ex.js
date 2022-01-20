@@ -8,7 +8,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const WebSocket = require('ws');
-let jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
+const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
 $.accountCheck = true;
 $.init = false;
 $.bean = '1'; //兑换多少豆，默认是500

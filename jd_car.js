@@ -9,7 +9,7 @@ const $ = new Env('京东汽车');
 const notify = $.isNode() ? require('./sendNotify') : '';
 
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-let jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
+const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
 const randomCount = $.isNode() ? 20 : 5;
 
 let cookiesArr = [], cookie = '', message;

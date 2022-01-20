@@ -7,7 +7,7 @@ cron 14 10 * * * https://raw.githubusercontent.com/smiek2121/scripts/master/jd_s
 
 const $ = new Env('京东签到图形验证');
 const notify = $.isNode() ? require('./sendNotifyMy') : '';
-let jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
+const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 CryptoScripts()
