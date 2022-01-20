@@ -21,6 +21,7 @@ Finish
  */
 console.log('京东多合一签到SCF开始')
 const sendNotify = require('./sendNotify.js').sendNotify
+const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
 const fs = require('fs')
 const jr_file = 'JRBODY.txt'
 const readline = require('readline')
@@ -426,7 +427,7 @@ function notify() {
         throw new Error(`账号Cookie读取失败, 请检查Json格式. \n${e.message}`)
       }
     }
-    // sendNotify("京东多合一签到SCF:",notification)
+    if(!jdNotify) await sendNotify("京东多合一签到SCF:", notification)
     $nobyda.time();
   } else {
     throw new Error('脚本终止, 未获取Cookie ‼️')

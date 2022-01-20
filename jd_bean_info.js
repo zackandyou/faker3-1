@@ -1,5 +1,6 @@
 const $ = new Env('京豆详情统计');
 const notify = $.isNode() ? require('./sendNotifyMy') : '';
+const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let allMessage = '';
@@ -21,7 +22,6 @@ if ($.isNode()) {
   }
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
-      allMessage = '';
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
@@ -48,8 +48,8 @@ if ($.isNode()) {
       await bean();
       await showMsg();
 
-      if ($.isNode() && allMessage) {
-        await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` }, '', '', $.UserName)
+      if ($.isNode() && $.message && !jdNotify) {
+        await notify.sendNotify(`${$.name}`, `${$.message}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` }, '', '', $.UserName)
       }
     }
   }

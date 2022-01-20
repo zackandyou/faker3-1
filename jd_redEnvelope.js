@@ -17,6 +17,7 @@ let rebatePin = ''
 const $ = new Env('年货节红包');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
+const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
 CryptoScripts()
 $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS;
 //IOS等用户直接用NobyDa的jd cookie
@@ -131,8 +132,8 @@ let timeH = $.time('H')
   if(Object.getOwnPropertyNames($.shareCodeArr).length > 0 && $.shareCodeArr["updateTime"] != pinUpdateTime) $.setdata($.shareCodeArr,'gua_JDnhjRed')
   if(message){
     $.msg($.name, ``, `${message}\nhttps://u.jd.com/SCMjnig\n\n跳转到app 可查看助力情况`);
-    if ($.isNode()){
-      // await notify.sendNotify(`${$.name}`, `${message}\n\nhttps://u.jd.com/SCMjnig\n跳转到app 可查看助力情况`);
+    if ($.isNode() && !jdNotify){
+      await notify.sendNotify(`${$.name}`, `${message}\n\nhttps://u.jd.com/SCMjnig\n跳转到app 可查看助力情况`);
     }
   }
 })()

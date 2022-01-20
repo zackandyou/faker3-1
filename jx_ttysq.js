@@ -12,6 +12,7 @@ const $ = new Env('天天压岁钱');
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
+const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [],
     cookie = '',
@@ -148,7 +149,7 @@ const JD_API_HOST = `https://m.jingxi.com`;
             }
         }
     };
-    // if ($.message) await notify.sendNotify(`${$.name}`, `${message}\n`);
+    if ($.message && !jdNotify) await notify.sendNotify(`${$.name}`, `${message}\n`);
 })()
 .catch((e) => $.logErr(e))
 .finally(() => $.done())

@@ -26,7 +26,7 @@ let cookiesArr = []
 var tools = []
 
 let notify, allMessage = '';
-const jdNotify =true;//是否关闭通知，false打开通知推送，true关闭通知推送
+const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
 
 !(async () => {
     await requireConfig()
