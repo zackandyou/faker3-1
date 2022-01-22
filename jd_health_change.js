@@ -12,6 +12,7 @@ const $ = new Env('健康社区上新通知');
 const path = $.isNode() ? require('path') : '';
 const fs = $.isNode() ? require('fs') : '';
 const notify = $.isNode() ? require('./sendNotifyMy') : '';
+const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const rootPath = path.resolve(__dirname);
@@ -57,7 +58,7 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
             }
             await getMessage();
             await getUserScore();
-            if ($.isNode() && $.newGoods) {
+            if ($.isNode() && $.newGoods && !jdNotify) {
                 await notify.sendNotify($.name, `【京东账号${$.index}】${$.nickName || $.UserName}\n${$.message}\n兑换入口：京东首页-边玩边赚-健康社区`, {index: $.index}, '', '', $.UserName);
             }
         }
