@@ -80,7 +80,7 @@ $.shareId = [];
       await getAward();//抽奖
     }
   }
-  if (allMessage) {
+  if (allMessage && !jdNotify) {
     if ($.isNode()) await notify.sendNotify($.name, allMessage);
     $.msg($.name, '', allMessage, {"open-url": "https://blindbox5g.jd.com"})
   }

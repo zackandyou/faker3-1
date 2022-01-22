@@ -62,7 +62,7 @@ $.shareId = [];
         }
     }
     if (allMessage) {
-        if ($.isNode()) await notify.sendNotify($.name, allMessage);
+        if ($.isNode() && !jdNotify) await notify.sendNotify($.name, allMessage);
         $.msg($.name, '', allMessage, {"open-url": "https://blindbox5g.jd.com"})
     }
     await $.wait(500)
