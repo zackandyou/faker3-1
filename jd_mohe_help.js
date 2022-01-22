@@ -20,8 +20,8 @@ cron "5 0,19 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/m
  */
 const $ = new Env('5G超级盲盒内部互助');
 const notify = $.isNode() ? require('./sendNotify') : '';
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
+const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let cookiesArr = [], cookie = '', message, allMessage = '';
 
 if ($.isNode()) {
