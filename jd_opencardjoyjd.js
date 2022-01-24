@@ -24,6 +24,7 @@ const $ = new Env('会员开卡赢京豆');
 const Faker=require('./sign_graphics_validate.js') 
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
+const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [],
     cookie = '';
@@ -60,7 +61,7 @@ message = ""
   }
   if(message){
     $.msg($.name, ``, `${message}\n获得到的京豆不一定到账`);
-    if ($.isNode()){
+    if ($.isNode() && !jdNotify){
       await notify.sendNotify(`${$.name}`, `${message}\n获得到的京豆不一定到账`);
     }
   }
