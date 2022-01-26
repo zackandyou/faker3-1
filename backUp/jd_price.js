@@ -72,7 +72,8 @@ $.HyperParam = {
 function requireConfig() {
     return new Promise(resolve => {
         console.log('开始获取配置文件\n')
-        $.notify = $.isNode() ? require('./sendNotify') : { sendNotify: async () => { } }
+        const jdNotify = $.isNode() && process.env.JD_CLOSE_NOTIFY && process.env.JD_CLOSE_NOTIFY == "true" ? true : false;//是否关闭通知，false打开通知推送，true关闭通知推送
+        $.notify = $.isNode() && !jdNotify ? require('./sendNotify') : { sendNotify: async () => { } }
         //获取 Cookies
         $.cookiesArr = []
         if ($.isNode()) {
